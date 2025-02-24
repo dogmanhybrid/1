@@ -1,0 +1,7 @@
+[build]  
+  command = "echo 'Build bypass'"  
+
+[context.production.environment]  
+  NETLIFY_JS_MINIFY = "false"  
+  NETLIFY_CSS_MINIFY = "false"  
+  NETLIFY_HTML_MINIFY = "false"  
